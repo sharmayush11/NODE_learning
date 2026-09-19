@@ -18,8 +18,32 @@ const createProduct = async (req, res) => {
     res.status(201).json(product);
 };
 
+const updateProduct = async (req, res) => {
+    const product = await Product.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+            new: true,
+            runValidators: true
+        }
+    );
+
+    res.json(product);
+};
+
+const deleteProduct = async (req, res) => {
+    const product = await Product.findByIdAndDelete(req.params.id);
+
+    res.json({
+        message: "Product deleted successfully",
+        product
+    });
+};
+
 module.exports = {
     getProducts,
     getProduct,
-    createProduct
+    createProduct,
+    updateProduct,
+    deleteProduct
 };
