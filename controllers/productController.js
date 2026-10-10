@@ -1,15 +1,29 @@
-const createProduct = async (req, res) => {
+```javascript
+const getProducts = async (req, res) => {
     try {
-        const product = await Product.create(req.body);
+        const products = await Product.find().sort({ createdAt: -1 });
 
-        res.status(201).json({
-            message: "Product created successfully",
-            product
+        if (products.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No products found"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            count: products.length,
+            products
         });
 
     } catch (error) {
         res.status(500).json({
-            message: error.message
+            success: false,
+            message: "Failed to fetch products",
+            error: error.message
         });
     }
 };
+
+module.exports = { getProducts };
+```
